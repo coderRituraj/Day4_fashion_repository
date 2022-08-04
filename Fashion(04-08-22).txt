@@ -9,6 +9,7 @@ brand_values int,
 audiance_target nvarchar(20)
 )
 
+ 
 CREATE TABLE celebrity(
 celeb_id int primary key identity,
 celeb_fname nvarchar(20),
@@ -295,3 +296,127 @@ join brand
     ON brand.brand_id=endorsement.brand_id
 END
 EXEC sp_common_endorsement
+
+SELECT *FROM brand
+
+SELECT *FROM celebrity
+
+SELECT *FROM endorsement 
+SELECT *FROM brand_log
+/* Creating brand log for campany */
+
+CREATE TABLE brand_log(log_id INT IDENTITY(1000,1),brand_id INT, Operation NVARCHAR(20), updation_time DATETIME)
+
+
+/*creating trigger for insertion command for brand */
+CREATE TRIGGER BrandInsertTrigger
+ON brand
+FOR INSERT
+AS
+INSERT INTO brand_log(brand_id,Operation, updation_time)
+SELECT brand_id,'Data inserted', GETDATE() FROM inserted
+ 
+INSERT INTO brand values('AWS', 'Cloud',12828,'programmer')
+
+
+/* Create a trigger for Brand Update Trigger*/
+ CREATE TRIGGER BrandUpdateTrigger
+ ON brand
+ AFTER UPDATE
+ AS 
+ INSERT INTO brand_log(brand_id,Operation, updation_time)
+SELECT brand_id, 'DATA UPDATED', GETDATE() FROM DELETED 
+
+SELECT * FROM brand_log
+UPDATE brand SET brand_name='OPPO' WHERE brand_id =11
+
+
+/* Create triiger for deleted item */
+
+CREATE TRIGGER BrandDeleteTrigger
+ ON brand
+ AFTER delete
+ AS 
+ INSERT INTO brand_log(brand_id,Operation, updation_time)
+SELECT brand_id, 'DATA UPDATED', GETDATE() FROM DELETED 
+DELETE FROM brand WHERE brand_id=8
+
+SELECT * FROM brand_log
+
+/*Create a insertion trigger for celebrity table */
+
+/* create celebrity_log */
+CREATE TABLE celebrity_log(log_id INT IDENTITY(1000,1),celeb_id INT, operation NVARCHAR(20), updation_time DATETIME)
+
+CREATE TRIGGER CelebrityInsertTrigger
+ON celebrity
+FOR INSERT
+AS
+INSERT INTO celebrity_log(celeb_id,operation, updation_time)
+SELECT celeb_id,'Data inserted', GETDATE() FROM inserted
+
+INSERT INTO celebrity values('Ranbir', 'kapoor','programmer',34,3355)
+
+SELECT * FROM celebrity_log
+
+/* Create a Delete trigger for celebrity*/
+
+CREATE TRIGGER CelebrityDeleteTrigger
+ON celebrity
+after delete
+AS
+INSERT INTO celebrity_log(celeb_id,operation, updation_time)
+SELECT celeb_id,'Data deleted', GETDATE() FROM deleted
+
+DELETE FROM celebrity where celeb_id =9
+
+SELECT * FROM celebrity_log
+
+/* Create a update trigger for celebrity */
+CREATE TRIGGER CelebrityDeleteTrigger
+ON celebrity
+AFTER UPDATE
+AS
+INSERT INTO celebrity_log(celeb_id,operation, updation_time)
+SELECT celeb_id,'data Updated', GETDATE() FROM deleted
+
+UPDATE celebrity SET Celeb_lname ='Singh' where celeb_fname='Ranbir'
+
+SELECT * FROM celebrity_log
+
+/* Create table for endorsement_log */
+
+CREATE TABLE endor_log(log_id INT IDENTITY(1000,1),celeb_id int, brand_id int , operation NVARCHAR(20), updation_time DATETIME)
+
+/* create table on insert endorsement_log */
+CREATE TRIGGER EndorInsertTrigger
+ON endorsement
+FOR INSERT
+AS
+INSERT INTO celebrity_log(brand_id,celeb_id,operation, updation_time)
+SELECT brand_id,celeb_id,'DATA INSERTED', GETDATE() FROM INSERTED
+
+SELECT * FROM celebrity_log
+
+/* Create a update trigger for celebrity */
+CREATE TRIGGER CelebrityDeleteTrigger
+ON endorsment
+AFTER UPDATE
+AS
+INSERT INTO celebrity_log(brand_id,celeb_id,operation, updation_time)
+SELECT celeb_id,'data Updated', GETDATE() FROM deleted
+
+/* Create a Delete trigger for celebrity*/
+
+CREATE TRIGGER CelebrityDeleteTrigger
+ON endorsment
+after delete
+AS
+INSERT INTO celebrity_log(brand_id,celeb_id,operation, updation_time)
+SELECT brand_id,celeb_id,'Data deleted', GETDATE() FROM deleted
+
+
+
+
+ 
+
