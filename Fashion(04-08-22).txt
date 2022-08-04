@@ -1,0 +1,297 @@
+CREATE DATABASE fashionWord
+USE fashionWord
+
+CREATE TABLE brand(
+brand_id int primary key identity,
+brand_name nvarchar(20),
+brand_segment nvarchar(20),
+brand_values int,
+audiance_target nvarchar(20)
+)
+
+CREATE TABLE celebrity(
+celeb_id int primary key identity,
+celeb_fname nvarchar(20),
+celeb_lname nvarchar(20),
+celeb_area nvarchar(20),
+celeb_age int,
+followers_num numeric(15,1)
+)
+drop table celebrity
+
+CREATE TABLE endorsement(
+brand_id int foreign key references brand(brand_id),
+celeb_id int foreign key references celebrity(celeb_id),
+tenure_deal int
+)
+drop table endorsement
+
+/* Creating procedure for insert data in brand table*/
+
+CREATE PROCEDURE sp_insertbrand(
+@brand_name nvarchar(20),
+@brand_segment nvarchar(20),
+@brand_values int,
+@audiance_target nvarchar(20)
+)
+AS
+BEGIN
+INSERT INTO brand(brand_name,brand_segment,brand_values,audiance_target) VALUES (@brand_name,@brand_segment,@brand_values,@audiance_target)
+ END
+
+ EXEC sp_insertbrand
+ @brand_name ='Apple',
+ @brand_segment = 'mobile',
+ @brand_values = 10000,
+ @audiance_target = Youth
+
+ EXEC sp_insertbrand
+ @brand_name ='Sony',
+ @brand_segment = 'mobile',
+ @brand_values = 11000,
+ @audiance_target = Youth
+
+  EXEC sp_insertbrand
+ @brand_name ='Sony',
+ @brand_segment = 'mobile',
+ @brand_values = 11000,
+ @audiance_target = Youth
+ 
+ EXEC sp_insertbrand
+ @brand_name ='Lg',
+ @brand_segment = 'Tv',
+ @brand_values = 13000,
+ @audiance_target = family
+
+  EXEC sp_insertbrand
+ @brand_name ='Samsung',
+ @brand_segment = 'mobile',
+ @brand_values = 14000,
+ @audiance_target = Youth
+
+  EXEC sp_insertbrand
+ @brand_name ='Nokia',
+ @brand_segment = 'Mobile',
+ @brand_values = 9000,
+ @audiance_target = 'meddle age' 
+
+  EXEC sp_insertbrand
+ @brand_name ='Tata',
+ @brand_segment = 'car',
+ @brand_values = 998000,
+ @audiance_target = 'Youth and middle age'
+
+  EXEC sp_insertbrand
+ @brand_name ='Puma',
+ @brand_segment = 'Shoes',
+ @brand_values = 12800,
+ @audiance_target = Youth
+
+  EXEC sp_insertbrand
+ @brand_name ='Nike',
+ @brand_segment = 'shoes',
+ @brand_values = 110009,
+ @audiance_target = 'sport aspirant '
+
+  EXEC sp_insertbrand
+ @brand_name ='H&M',
+ @brand_segment = 'cloths',
+ @brand_values = 1100876,
+ @audiance_target = 'Youth '
+ 
+ select * from brand
+ /* Inserting data into celebrity table*/
+
+CREATE PROCEDURE sp_insertcelebrity(
+@celeb_fname nvarchar(20),
+@celeb_lname nvarchar(20),
+@celeb_area nvarchar(20),
+@celeb_age int,
+@followers_num numeric(15,1)
+)
+AS 
+BEGIN 
+INSERT INTO celebrity(celeb_fname,celeb_lname, celeb_area, celeb_age,followers_num ) VALUES (@celeb_fname,@celeb_lname,@celeb_area,@celeb_age,@followers_num)
+
+END
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Robbert',
+@celeb_lname ='Junior',
+@celeb_area = 'Actor',
+@celeb_age = 45,
+@followers_num = 182333.
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Tom',
+@celeb_lname ='Cruise',
+@celeb_area = 'Actor',
+@celeb_age = 54,
+@followers_num = 182.567
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Leonard',
+@celeb_lname = 'Dicaprio',
+@celeb_area = 'Actor',
+@celeb_age = 45,
+@followers_num = 182.345
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Johnny',
+@celeb_lname ='Depp',
+@celeb_area = 'Actor',
+@celeb_age = 60,
+@followers_num = 130011
+
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Virat',
+@celeb_lname ='kohali',
+@celeb_area = 'cricketer',
+@celeb_age = 40,
+@followers_num = 182813.
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Rishab',
+@celeb_lname ='Pant',
+@celeb_area = 'Cricketer',
+@celeb_age = 30,
+@followers_num = 189813.
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Narendra',
+@celeb_lname ='Modi',
+@celeb_area = 'Politician',
+@celeb_age =63,
+@followers_num = 492101.
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Amir',
+@celeb_lname ='khan',
+@celeb_area = 'Actor',
+@celeb_age = 45,
+@followers_num = 182333.
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Robbert',
+@celeb_lname ='Junior',
+@celeb_area = 'Actor',
+@celeb_age = 45,
+@followers_num = 182333.
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'Hulk',
+@celeb_lname ='Junio',
+@celeb_area = 'Actor',
+@celeb_age = 50,
+@followers_num = 1823.99
+
+EXEC sp_insertcelebrity
+@celeb_fname = 'MS',
+@celeb_lname ='Dhoni',
+@celeb_area = 'Cricketers',
+@celeb_age = 45,
+@followers_num = 282333.
+select *from celebrity
+
+
+
+/* create procedure of endorsement table and inser data into*/
+
+CREATE PROCEDURE SP_INSERTENDORSEMENT(
+@brand_id INT,
+@celeb_id INT,
+@tenure_deal int
+)
+AS 
+BEGIN 
+INSERT INTO endorsement (brand_id, celeb_id, tenure_deal)
+ values (@brand_id, @celeb_id, @tenure_deal)
+ END
+ 
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =1,
+ @celeb_id =1,
+ @tenure_deal =3
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =1,
+ @celeb_id =2,
+ @tenure_deal =4
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =2,
+ @celeb_id =2,
+ @tenure_deal =2
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =3,
+ @celeb_id =2,
+ @tenure_deal =3
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =3,
+ @celeb_id =3,
+ @tenure_deal =3
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =4,
+ @celeb_id =3,
+ @tenure_deal =2
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =7,
+ @celeb_id =9,
+ @tenure_deal =3
+
+ EXEC SP_INSERTENDORSEMENT
+ @brand_id =5,
+ @celeb_id =9,
+ @tenure_deal =3
+
+ SELECT * FROM endorsement
+
+
+ /* brands not endorced by celebrity */
+
+CREATE PROCEDURE sp_brandsNotEndorsed
+AS 
+BEGIN
+SELECT brand_name FROM brand AS b 
+left join endorsement AS e 
+ON b.brand_id=e.brand_id WHERE e.brand_id is null
+END
+
+/*executing sp_brandsNotEndorsed*/
+exec sp_brandsNotEndorsed
+
+
+/* brands endorced by celebrity */
+
+CREATE PROCEDURE sp_brand_endorsement
+AS 
+BEGIN
+SELECT DISTINCT brand_name  FROM brand AS b 
+left join endorsement AS e 
+ON b.brand_id=e.brand_id where e.brand_id IS NOT NULL 
+END
+
+/*executing sp_brandsNotEndorsed*/
+exec sp_brand_endorsement
+
+/* Common Brand Endorsement celebrity */
+
+CREATE PROCEDURE sp_common_endorsement
+AS
+BEGIN
+
+SELECT
+    celebrity.celeb_fname,
+    brand.brand_name
+FROM  celebrity
+join endorsement 
+    ON celebrity.celeb_id=endorsement.celeb_id
+join brand 
+    ON brand.brand_id=endorsement.brand_id
+END
+EXEC sp_common_endorsement
